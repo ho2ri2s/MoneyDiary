@@ -168,13 +168,16 @@
                     android:text="食費"
                     android:textSize="18sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnEat"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-
-                    android:layout_weight="3" />
+                    android:layout_weight="3"
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_eat" />
             </LinearLayout>
 
             <LinearLayout
@@ -191,16 +194,19 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="交通費"
+                    android:text="交通"
                     android:textSize="18sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnTransportation"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button" />
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_transportation"/>
             </LinearLayout>
 
             <LinearLayout
@@ -217,16 +223,19 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="教育費"
+                    android:text="教育"
                     android:textSize="18sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnEducation"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button" />
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_education" />
             </LinearLayout>
 
             <LinearLayout
@@ -246,13 +255,17 @@
                     android:text="趣味"
                     android:textSize="18sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnHobby"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button" />
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_hobby"
+                    />
             </LinearLayout>
 
         </LinearLayout>
@@ -280,13 +293,17 @@
                     android:text="消耗品"
                     android:textSize="18sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnExpendables"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button" />
+                    android:text="Button"
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_expendables"/>
             </LinearLayout>
 
             <LinearLayout
@@ -303,16 +320,19 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="交際費"
+                    android:text="衣類"
                     android:textSize="18sp" />
 
-                <Button
-                    android:id="@+id/btnPlay"
+                <ImageButton
+                    android:id="@+id/btnFashion"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button" />
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_fashion" />
             </LinearLayout>
 
             <LinearLayout
@@ -329,16 +349,19 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="住居費"
+                    android:text="住居"
                     android:textSize="18sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnRent"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button" />
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_rent" />
             </LinearLayout>
 
             <LinearLayout
@@ -355,16 +378,19 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="通信費"
+                    android:text="通信"
                     android:textSize="18sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnCommunicationCost"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button" />
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_communication_cost"/>
             </LinearLayout>
 
         </LinearLayout>
