@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:background="@color/colorPrimary">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -22,41 +23,46 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnPreviousDay"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/ic_arrow_left"
-                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_arrow_left"
+                android:background="@color/colorPrimaryDark"
                 android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/txtDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_gravity="center"
+                android:layout_weight="4"
                 android:gravity="center"
-                android:text="TextView"
-                android:textSize="24sp" />
+                android:hint="日付を選択"
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnNextDay"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/ic_arrow_right"
-                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_arrow_right"
+                android:background="@color/colorPrimaryDark"
                 android:textSize="24sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/textView2"
@@ -64,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="項目" />
+                android:text="項目"
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/edtItemName"
@@ -73,9 +80,12 @@
                 android:layout_weight="4"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="項目名を入力してください"
+                android:hint="項目名を入力"
                 android:inputType="textPersonName"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textSize="18sp" />
 
             <Space
                 android:layout_width="0dp"
@@ -86,8 +96,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/textView3"
@@ -95,7 +106,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="金額 ￥" />
+                android:text="金額 ￥"
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/edtPrice"
@@ -108,7 +120,9 @@
                 android:scrollbarAlwaysDrawHorizontalTrack="false"
                 android:selectAllOnFocus="false"
                 android:singleLine="true"
-                android:text="0" />
+                android:hint="0"
+                android:textColorHint="@android:color/white"
+                android:textSize="20sp" />
 
             <Space
                 android:layout_width="0dp"
@@ -166,6 +180,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="食費"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -174,10 +189,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_eat" />
+                    android:src="@drawable/ic_eat"
+                    android:tag="eat"/>
             </LinearLayout>
 
             <LinearLayout
@@ -195,6 +211,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="交通"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -203,10 +220,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_transportation"/>
+                    android:src="@drawable/ic_transportation"
+                    android:tag="transportation"/>
             </LinearLayout>
 
             <LinearLayout
@@ -224,6 +242,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="教育"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -232,10 +251,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_education" />
+                    android:src="@drawable/ic_education"
+                    android:tag="education"/>
             </LinearLayout>
 
             <LinearLayout
@@ -253,6 +273,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="趣味"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -261,11 +282,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_hobby"
-                    />
+                    android:tag="hobby"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -291,6 +312,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="消耗品"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -299,11 +321,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:text="Button"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_expendables"/>
+                    android:src="@drawable/ic_expendables"
+                    android:tag="expendables"/>
             </LinearLayout>
 
             <LinearLayout
@@ -321,6 +343,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="衣類"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -329,10 +352,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_fashion" />
+                    android:src="@drawable/ic_fashion"
+                    android:tag="fashion"/>
             </LinearLayout>
 
             <LinearLayout
@@ -350,6 +374,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="住居"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -358,10 +383,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_rent" />
+                    android:src="@drawable/ic_rent"
+                    android:tag="rent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -379,6 +405,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="通信"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -387,10 +414,11 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:padding="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_communication_cost"/>
+                    android:src="@drawable/ic_communication_cost"
+                    android:tag="communication_cost"/>
             </LinearLayout>
 
         </LinearLayout>

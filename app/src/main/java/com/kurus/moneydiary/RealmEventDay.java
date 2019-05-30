@@ -7,6 +7,7 @@ import io.realm.RealmObject;
 public class RealmEventDay extends RealmObject {
 
     private String updateDate;
+    private int imageResource;
     private String itemType;
     private String itemName;
     private int price;
@@ -23,7 +24,6 @@ public class RealmEventDay extends RealmObject {
     public String getItemType() {
         return itemType;
     }
-
     public void setItemType(String itemType) {
         this.itemType = itemType;
     }
@@ -50,5 +50,12 @@ public class RealmEventDay extends RealmObject {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getImageResource() {
+        return imageResource;
+    }
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
     }
 }
