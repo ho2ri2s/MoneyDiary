@@ -5,13 +5,41 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieEntry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AggregateActivity extends AppCompatActivity {
+
+    ImageButton btnPreviousDay;
+    ImageButton btnNextDay;
+    TextView txtDate;
+    PieChart pieChart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aggregate);
+
+        btnPreviousDay = findViewById(R.id.btnPreviousDay);
+        btnNextDay = findViewById(R.id.btnNextDay);
+        txtDate = findViewById(R.id.txtDate);
+        pieChart = findViewById(R.id.pieChart);
+
+        setupPieChartView();
+
+    }
+
+    private void setupPieChartView() {
+        List<PieEntry> entries = new ArrayList<>();
+
+
     }
 
     @Override

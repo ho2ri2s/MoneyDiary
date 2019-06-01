@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     choseIcon = (ImageButton)view;
                     choseIcon.setBackground(getResources().getDrawable(R.drawable.chose_border));
 
-                    LinearLayout linearLayout = (LinearLayout) view.getParent();
-                    TextView txtItemType = (TextView) linearLayout.getChildAt(0);
-                    itemType = txtItemType.getText().toString();
+                    itemType = view.getTag().toString();
                     choseImageResource = getResources().getIdentifier("ic_" + view.getTag(), "drawable", getPackageName());
 
                 }
@@ -101,12 +98,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd - hh:mm:ss");
         final String updateDate = simpleDateFormat.format(calendar.getTime());
-        final Date date = specifiedCalendar.getTime();
 
         final String itemName = edtItemName.getText().toString();
         final int price = Integer.parseInt(edtPrice.getText().toString());
 
-        if (itemType != null && itemName != null && price != 0) {
+        if (itemType != null && itemName != null && price != 0 && specifiedCalendar != null) {
+            final Date date = specifiedCalendar.getTime();
             //保存
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -142,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onSelect(List<Calendar> calendar) {
                         specifiedCalendar = calendar.get(0);
-                        Log.d("MYTAG", specifiedCalendar + "after");
-                        Log.d("MYTAG", specifiedCalendar.getTime() + "");
+                        Log.d("MYTAG", specifiedCalendar + "  spe");
+                        Log.d("MYTAG", Calendar.getInstance() + "  now");
 
                         txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
                     }
