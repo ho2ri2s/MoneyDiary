@@ -29,24 +29,24 @@ import io.realm.Realm;
 
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Realm realm;
+    private Realm realm;
 
-    ImageButton btnItemType[] = new ImageButton[8];
-    int btnIds[] = {
+    private ImageButton btnItemType[] = new ImageButton[8];
+    private int btnIds[] = {
             R.id.btnEat, R.id.btnTransportation, R.id.btnEducation, R.id.btnHobby,
             R.id.btnExpendables, R.id.btnFashion, R.id.btnRent, R.id.btnCommunicationCost
     };
-    ImageButton btnPreviousDay;
-    ImageButton btnNextDay;
-    ImageButton choseIcon;
-    TextView txtDate;
-    EditText edtPrice;
-    EditText edtItemName;
-    FloatingActionButton fab;
+    private ImageButton btnPreviousDay;
+    private ImageButton btnNextDay;
+    private ImageButton choseIcon;
+    private TextView txtDate;
+    private EditText edtPrice;
+    private EditText edtItemName;
+    private FloatingActionButton fab;
 
-    Calendar specifiedCalendar;
-    String itemType;
-    int choseImageResource;
+    private Calendar specifiedCalendar;
+    private String itemType;
+    private int choseImageResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -34,7 +34,6 @@ public class PreviewActivity extends AppCompatActivity implements View.OnClickLi
         fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(this);
 
-
     }
 
     @Override

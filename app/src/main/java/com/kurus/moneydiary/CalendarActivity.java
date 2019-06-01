@@ -21,9 +21,10 @@ import io.realm.RealmResults;
 
 public class CalendarActivity extends AppCompatActivity implements OnDayClickListener {
 
+    private Realm realm;
+
     private CalendarView calendarView;
 
-    Realm realm;
     private List<EventDay> eventDays;
 
     @Override

@@ -32,6 +32,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:textColor="@android:color/white"
                 android:text="項目種類" />
 
             <TextView
@@ -40,6 +41,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:textColor="@android:color/white"
                 android:text="項目名"/>
 
         </LinearLayout>
@@ -55,6 +57,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="@android:color/white"
                 android:text="￥" />
 
             <TextView
@@ -64,6 +67,7 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 android:textSize="20sp"
+                android:textColor="@android:color/white"
                 android:text="0" />
 
         </LinearLayout>

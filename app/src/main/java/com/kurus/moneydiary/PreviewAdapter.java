@@ -1,5 +1,6 @@
 package com.kurus.moneydiary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,13 +16,13 @@ import java.util.List;
 public class PreviewAdapter extends ArrayAdapter<RealmEventDay> {
 
     private int resource;
-    private PreviewActivity previewActivity;
+    private Activity activity;
     private List<RealmEventDay> realmEventDays;
 
     public PreviewAdapter(Context context, int resource, List<RealmEventDay> objects) {
         super(context, resource, objects);
 
-        previewActivity = (PreviewActivity) context;
+        activity = (Activity) context;
         this.resource = resource;
         realmEventDays = objects;
     }
@@ -64,9 +65,9 @@ public class PreviewAdapter extends ArrayAdapter<RealmEventDay> {
         viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(previewActivity, EditActivity.class);
+                Intent intent = new Intent(activity, EditActivity.class);
                 intent.putExtra("updateDate", item.getUpdateDate());
-                previewActivity.startActivity(intent);
+                activity.startActivity(intent);
             }
         });
 
