@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,14 +33,14 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private Realm realm;
 
-    private ImageButton btnItemType[] = new ImageButton[8];
+    private ImageView btnItemType[] = new ImageView[8];
     private int btnIds[] = {
             R.id.btnEat, R.id.btnTransportation, R.id.btnEducation, R.id.btnHobby,
             R.id.btnExpendables, R.id.btnFashion, R.id.btnRent, R.id.btnCommunicationCost
     };
     private ImageButton btnPreviousDay;
     private ImageButton btnNextDay;
-    private ImageButton choseIcon;
+    private ImageView imgChoseIcon;
     private TextView txtDate;
     private EditText edtPrice;
     private EditText edtItemName;
@@ -65,15 +67,18 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onClick(View view) {
                     //選択された場合枠線で囲む処理
-                    if (choseIcon != null) {
-                        choseIcon.setBackground(getResources().getDrawable(R.color.colorPrimary));
+                    if (imgChoseIcon != null) {
+                        imgChoseIcon.setBackground(getResources().getDrawable(R.color.colorPrimary));
                     }
-                    choseIcon = (ImageButton) view;
-                    choseIcon.setBackground(getResources().getDrawable(R.drawable.chose_border));
+                    imgChoseIcon = (ImageView) view;
+                    imgChoseIcon.setBackground(getResources().getDrawable(R.drawable.chose_border));
 
                     //Realmに格納する値
-                    itemType = view.getTag().toString();
-                    choseImageResource = getResources().getIdentifier("ic_" + view.getTag(), "drawable", getPackageName());
+                    LinearLayout parentLayout = (LinearLayout) view.getParent();
+                    TextView txtItemType = (TextView) parentLayout.getChildAt(0);
+                    itemType = txtItemType.getText().toString();
+                    choseImageResource = getResources().getIdentifier(view.getTag().toString(), "drawable", getPackageName());
+
 
                 }
             });
@@ -110,7 +115,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < btnItemType.length; i++) {
             if (btnItemType[i].getTag().toString().equals(realmEventDay.getItemType())) {
                 btnItemType[i].setBackground(getResources().getDrawable(R.drawable.chose_border));
-                choseIcon = btnItemType[i];
+                imgChoseIcon = btnItemType[i];
                 break;
             }
         }
@@ -199,6 +204,14 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.intent_calendar:
+                Intent intentCalendar = new Intent(EditActivity.this, CalendarActivity.class);
+                startActivity(intentCalendar);
+                break;
+            case R.id.intent_pie_chart:
+                Intent intentPieChart = new Intent(EditActivity.this, PieChartActivity.class);
+                startActivity(intentPieChart);
+                break;
             case R.id.delete_event:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("本当に削除していいですか？")

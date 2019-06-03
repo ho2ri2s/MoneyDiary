@@ -184,7 +184,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnEat"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -194,7 +194,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_eat"
-                    android:tag="eat"/>
+                    android:tag="ic_eat"/>
 
             </LinearLayout>
 
@@ -216,7 +216,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnTransportation"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -226,7 +226,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_transportation"
-                    android:tag="transportation"/>
+                    android:tag="ic_transportation"/>
             </LinearLayout>
 
             <LinearLayout
@@ -247,7 +247,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnEducation"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -257,7 +257,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_education"
-                    android:tag="education"/>
+                    android:tag="ic_education"/>
             </LinearLayout>
 
             <LinearLayout
@@ -278,7 +278,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnHobby"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -288,7 +288,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_hobby"
-                    android:tag="hobby"/>
+                    android:tag="ic_hobby"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -317,7 +317,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnExpendables"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -327,7 +327,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_expendables"
-                    android:tag="expendables"/>
+                    android:tag="ic_expendables"/>
             </LinearLayout>
 
             <LinearLayout
@@ -348,7 +348,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnFashion"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -358,7 +358,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_fashion"
-                    android:tag="fashion"/>
+                    android:tag="ic_fashion"/>
             </LinearLayout>
 
             <LinearLayout
@@ -379,7 +379,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnRent"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -389,7 +389,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_rent"
-                    android:tag="rent"/>
+                    android:tag="ic_rent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -410,7 +410,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnCommunicationCost"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -420,7 +420,7 @@
                     android:padding="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_communication_cost"
-                    android:tag="communication_cost"/>
+                    android:tag="ic_communication_cost"/>
             </LinearLayout>
 
         </LinearLayout>
