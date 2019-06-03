@@ -3,15 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/intentCalendar"
-        android:title="カレンダー"
+        android:id="@+id/intent_calendar"
         android:icon="@drawable/ic_calendar"
-        app:showAsAction="always"
-        />
+        android:title="カレンダー"
+        app:showAsAction="always" />
     <item
-        android:id="@+id/intentAggregate"
-        android:title="集計"
+        android:id="@+id/intent_pie_chart"
         android:icon="@drawable/ic_circle_graph"
-        app:showAsAction="always"/>
+        android:title="集計"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/delete_event"
+        android:icon="@drawable/ic_delete"
+        android:title="削除"
+        app:showAsAction="always" />
+
+
+    <group
+        android:id="@+id/pie_chart_group">
+        <item
+            android:id="@+id/daily_pie_chart"
+            android:title="日別"/>
+
+        <item
+            android:id="@+id/monthly_pie_chart"
+            android:title="月別"/>
+
+        <item
+            android:id="@+id/yearly_pie_chart"
+            android:title="年別"/>
+    </group>
 
 </menu>

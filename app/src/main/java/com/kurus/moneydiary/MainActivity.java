@@ -187,15 +187,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteMenu = menu.findItem(R.id.delete_event);
+
+        deleteMenu.setVisible(false);
+        menu.setGroupVisible(R.id.pie_chart_group, false);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.intentCalendar:
+            case R.id.intent_calendar:
                 Intent intentCalendar = new Intent(MainActivity.this, CalendarActivity.class);
                 startActivity(intentCalendar);
                 break;
-            case R.id.intentAggregate:
-                Intent intentAggregate = new Intent(MainActivity.this, AggregateActivity.class);
-                startActivity(intentAggregate);
+            case R.id.intent_pie_chart:
+                Intent intentPieChart = new Intent(MainActivity.this, PieChartActivity.class);
+                startActivity(intentPieChart);
                 break;
         }
         return super.onOptionsItemSelected(item);

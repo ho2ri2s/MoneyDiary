@@ -1,9 +1,9 @@
 package com.kurus.moneydiary;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +16,7 @@ import com.applandeo.materialcalendarview.DatePicker;
 import com.applandeo.materialcalendarview.builders.DatePickerBuilder;
 import com.applandeo.materialcalendarview.listeners.OnSelectDateListener;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -26,19 +27,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class AggregateActivity extends AppCompatActivity implements View.OnClickListener {
+public class PieChartActivity extends AppCompatActivity implements View.OnClickListener {
 
     // TODO: 2019/06/01 アイコンのサイズと色の変更 
-    // TODO: 2019/06/01 next,previousボタンの判定 
-    // TODO: 2019/06/01 pieChart詳細設定 
+    // TODO: 2019/06/01 pieChart詳細設定
     // TODO: 2019/06/01 月、年別チャート
-    
+
     private Realm realm;
 
     private ImageButton btnPreviousDay;
@@ -56,7 +59,7 @@ public class AggregateActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_aggregate);
+        setContentView(R.layout.activity_pie_chart);
 
         realm = Realm.getDefaultInstance();
 
@@ -89,7 +92,7 @@ public class AggregateActivity extends AppCompatActivity implements View.OnClick
         realmEventDayList = new ArrayList<>();
 
         RealmResults<RealmEventDay> realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
-        for(RealmEventDay realmEventDay : realmEventDays){
+        for (RealmEventDay realmEventDay : realmEventDays) {
             realmEventDayList.add(realmEventDay);
         }
 
@@ -98,19 +101,33 @@ public class AggregateActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void setupPieChartView() {
-        List<PieEntry> entries = new ArrayList<>();
+        //説明文の編集
+        Description description = new Description();
+        description.setText("支出");
+        description.setTextColor(Color.WHITE);
+        pieChart.setDescription(description);
 
-        Log.d("MYTAG", "date  " + specifiedCalendar.getTime());
+
+        //支出データをRealmから取り出してListに格納
+        List<PieEntry> pieEntries = new ArrayList<>();
+        HashMap<String, Integer> valueMap = new HashMap<>();
         RealmResults<RealmEventDay> realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
-        Log.d("MYTAG", realmEventDays + "");
 
-
-        for (RealmEventDay realmEventDay : realmEventDays){
-            entries.add(new PieEntry((float)realmEventDay.getPrice(), realmEventDay.getItemType()));
-            Log.d("MYTAG", realmEventDay.getItemName());
+        //同種別であれば値を加算
+        for (RealmEventDay realmEventDay : realmEventDays) {
+            if (valueMap.containsKey(realmEventDay.getItemType())) {
+                valueMap.put(realmEventDay.getItemType(), valueMap.get(realmEventDay.getItemType()) + realmEventDay.getPrice());
+            } else {
+                valueMap.put(realmEventDay.getItemType(), realmEventDay.getPrice());
+            }
         }
-
-        PieDataSet dataSet = new PieDataSet(entries, "種別");
+        //Pie Chartに値とラベルを格納
+        for(Iterator<Map.Entry<String, Integer>> iterator = valueMap.entrySet().iterator(); iterator.hasNext();){
+            Map.Entry<String, Integer> entry = iterator.next();
+            pieEntries.add(new PieEntry((float) entry.getValue(), entry.getKey()));
+        }
+        //データをセットし、pie chartを描画
+        PieDataSet dataSet = new PieDataSet(pieEntries, "種別");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setDrawValues(true);
 
@@ -120,11 +137,13 @@ public class AggregateActivity extends AppCompatActivity implements View.OnClick
 
         pieChart.setData(pieData);
         pieChart.invalidate();
+
+        pieChart.setNoDataText("支出がありません");
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.txtDate:
                 DatePickerBuilder builder = new DatePickerBuilder(this, new OnSelectDateListener() {
                     @Override
@@ -160,16 +179,26 @@ public class AggregateActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteMenu = menu.findItem(R.id.delete_event);
+
+        deleteMenu.setVisible(false);
+        menu.setGroupVisible(R.id.pie_chart_group, false);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.intentCalendar:
-                Intent intentCalendar = new Intent(AggregateActivity.this, CalendarActivity.class);
+            case R.id.intent_calendar:
+                Intent intentCalendar = new Intent(PieChartActivity.this, CalendarActivity.class);
                 startActivity(intentCalendar);
                 finish();
                 break;
-            case R.id.intentAggregate:
-                Intent intentAggregate = new Intent(AggregateActivity.this, AggregateActivity.class);
-                startActivity(intentAggregate);
+            case R.id.intent_pie_chart:
+                Intent intentPieChart = new Intent(PieChartActivity.this, PieChartActivity.class);
+                startActivity(intentPieChart);
                 finish();
                 break;
         }

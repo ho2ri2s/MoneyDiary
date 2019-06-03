@@ -105,16 +105,26 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteMenu = menu.findItem(R.id.delete_event);
+
+        deleteMenu.setVisible(false);
+        menu.setGroupVisible(R.id.pie_chart_group, false);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.intentCalendar:
+            case R.id.intent_calendar:
                 Intent intentCalendar = new Intent(CalendarActivity.this, CalendarActivity.class);
                 startActivity(intentCalendar);
                 finish();
                 break;
-            case R.id.intentAggregate:
-                Intent intentAggregate = new Intent(CalendarActivity.this, AggregateActivity.class);
-                startActivity(intentAggregate);
+            case R.id.intent_pie_chart:
+                Intent intentPieChart = new Intent(CalendarActivity.this, PieChartActivity.class);
+                startActivity(intentPieChart);
                 finish();
                 break;
         }

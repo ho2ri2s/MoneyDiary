@@ -77,7 +77,11 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
         btnPreviousDay = findViewById(R.id.btnPreviousDay);
+        btnPreviousDay.setVisibility(View.INVISIBLE);
+
         btnNextDay = findViewById(R.id.btnNextDay);
+        btnNextDay.setVisibility(View.INVISIBLE);
+
         txtDate = findViewById(R.id.txtDate);
         edtItemName = findViewById(R.id.edtItemName);
         edtPrice = findViewById(R.id.edtPrice);
@@ -104,6 +108,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < btnItemType.length; i++) {
             if (btnItemType[i].getTag().toString().equals(realmEventDay.getItemType())) {
                 btnItemType[i].setBackground(getResources().getDrawable(R.drawable.chose_border));
+                choseIcon = btnItemType[i];
                 break;
             }
         }
@@ -167,17 +172,30 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 editEvent();
                 break;
             case R.id.btnPreviousDay:
-
+                specifiedCalendar.add(Calendar.DAY_OF_MONTH, -1);
+                txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
                 break;
             case R.id.btnNextDay:
+                specifiedCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
                 break;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_option_menu, menu);
+        getMenuInflater().inflate(R.menu.option_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteMenu = menu.findItem(R.id.delete_event);
+
+        deleteMenu.setVisible(false);
+        menu.setGroupVisible(R.id.pie_chart_group, false);
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
