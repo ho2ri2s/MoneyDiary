@@ -38,9 +38,7 @@ import io.realm.RealmResults;
 
 public class PieChartActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // TODO: 2019/06/01 アイコンのサイズと色の変更 
-    // TODO: 2019/06/01 pieChart詳細設定
-    // TODO: 2019/06/03 コメントをつける
+
     enum Chart {
         DAILY,
         MONTHLY,
