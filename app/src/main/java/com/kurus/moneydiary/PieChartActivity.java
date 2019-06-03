@@ -41,6 +41,12 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
     // TODO: 2019/06/01 アイコンのサイズと色の変更 
     // TODO: 2019/06/01 pieChart詳細設定
     // TODO: 2019/06/01 月、年別チャート
+    // TODO: 2019/06/03 コメントをつける
+    enum Chart {
+        DAILY,
+        MONTHLY,
+        YEARLY
+    }
 
     private Realm realm;
 
@@ -49,11 +55,11 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
     private TextView txtDate;
     private PieChart pieChart;
 
-    private List<RealmEventDay> realmEventDayList;
     private PreviewAdapter previewAdapter;
     private ListView listView;
 
     private Calendar specifiedCalendar;
+    private Chart chart;
 
 
     @Override
@@ -73,6 +79,7 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
         btnNextDay.setOnClickListener(this);
 
         //現在日時設定
+        chart = Chart.DAILY;
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.AM_PM, 0);
         calendar.set(Calendar.HOUR, 0);
@@ -81,25 +88,62 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         specifiedCalendar = calendar;
-        txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
+        txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
 
-        showEventData();
+        //円グラフ表示
+        showData();
         setupPieChartView();
     }
 
-    public void showEventData() {
+    public void showData() {
+
         listView = findViewById(R.id.listView);
-        realmEventDayList = new ArrayList<>();
-
-        RealmResults<RealmEventDay> realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
-        for (RealmEventDay realmEventDay : realmEventDays) {
-            realmEventDayList.add(realmEventDay);
-        }
-
-        previewAdapter = new PreviewAdapter(this, R.layout.preview_list_item, realmEventDayList);
+        previewAdapter = new PreviewAdapter(this, R.layout.preview_list_item, getEventListData());
         listView.setAdapter(previewAdapter);
+
     }
 
+    private List<RealmEventDay> getEventListData() {
+        List<RealmEventDay> realmEventDayList = new ArrayList<>();
+        RealmResults<RealmEventDay> realmEventDays;
+
+        if (chart == Chart.DAILY) {
+            //1日の支出のデータを取り出す
+            realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
+            for (RealmEventDay realmEventDay : realmEventDays) {
+                realmEventDayList.add(realmEventDay);
+            }
+
+        } else if (chart == Chart.MONTHLY) {
+            //1ヵ月の支出データを取り出す
+            int maxDate = specifiedCalendar.getActualMaximum(Calendar.DATE);
+
+            for (int dayValue = 1; dayValue <= maxDate; dayValue++) {
+                specifiedCalendar.set(Calendar.DATE, dayValue);
+                realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
+                for (RealmEventDay realmEventDay : realmEventDays) {
+                    realmEventDayList.add(realmEventDay);
+                }
+            }
+
+        } else if (chart == Chart.YEARLY) {
+            //1年の支出データを取り出す(月は0始まり)
+            for (int monthValue = 0; monthValue < 12; monthValue++) {
+                specifiedCalendar.set(Calendar.MONTH, monthValue);
+                int maxDate = specifiedCalendar.getActualMaximum(Calendar.DATE);
+                for (int dayValue = 0; dayValue <= maxDate; dayValue++) {
+                    realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
+                    for (RealmEventDay realmEventDay : realmEventDays) {
+                        realmEventDayList.add(realmEventDay);
+                    }
+                }
+            }
+        }
+
+        return realmEventDayList;
+    }
+
+    // TODO: 2019/06/03 forループが終わった後の日付でクエリが実行されているからsizeが0になる
     public void setupPieChartView() {
         //説明文の編集
         Description description = new Description();
@@ -107,22 +151,23 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
         description.setTextColor(Color.WHITE);
         pieChart.setDescription(description);
 
-
-        //支出データをRealmから取り出してListに格納
-        List<PieEntry> pieEntries = new ArrayList<>();
+        //同種別の支出をまとめてHashMapで管理
         HashMap<String, Integer> valueMap = new HashMap<>();
-        RealmResults<RealmEventDay> realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
+        //支出データをRealmから取り出してListに格納
+        List<RealmEventDay> realmEventDayList = getEventListData();
 
         //同種別であれば値を加算
-        for (RealmEventDay realmEventDay : realmEventDays) {
+        for (RealmEventDay realmEventDay : realmEventDayList) {
             if (valueMap.containsKey(realmEventDay.getItemType())) {
                 valueMap.put(realmEventDay.getItemType(), valueMap.get(realmEventDay.getItemType()) + realmEventDay.getPrice());
             } else {
                 valueMap.put(realmEventDay.getItemType(), realmEventDay.getPrice());
             }
         }
+
         //Pie Chartに値とラベルを格納
-        for(Iterator<Map.Entry<String, Integer>> iterator = valueMap.entrySet().iterator(); iterator.hasNext();){
+        List<PieEntry> pieEntries = new ArrayList<>();
+        for (Iterator<Map.Entry<String, Integer>> iterator = valueMap.entrySet().iterator(); iterator.hasNext(); ) {
             Map.Entry<String, Integer> entry = iterator.next();
             pieEntries.add(new PieEntry((float) entry.getValue(), entry.getKey()));
         }
@@ -145,11 +190,12 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtDate:
+                //ダイアログでカレンダーを表示する
                 DatePickerBuilder builder = new DatePickerBuilder(this, new OnSelectDateListener() {
                     @Override
                     public void onSelect(List<Calendar> calendar) {
                         specifiedCalendar = calendar.get(0);
-                        txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
+                        txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
                     }
                 })
                         .pickerType(CalendarView.ONE_DAY_PICKER)
@@ -158,15 +204,29 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
                 datePicker.show();
                 break;
             case R.id.btnPreviousDay:
-                specifiedCalendar.add(Calendar.DAY_OF_MONTH, -1);
-                txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
-                showEventData();
+                //日月年に関してそれぞれ1つ前を表示する
+                if (chart == Chart.DAILY) {
+                    specifiedCalendar.add(Calendar.DAY_OF_MONTH, -1);
+                } else if (chart == Chart.MONTHLY) {
+                    specifiedCalendar.add(Calendar.MONTH, -1);
+                } else if (chart == Chart.YEARLY) {
+                    specifiedCalendar.add(Calendar.YEAR, -1);
+                }
+                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                showData();
                 setupPieChartView();
                 break;
             case R.id.btnNextDay:
-                specifiedCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
-                showEventData();
+                //日月年に関してそれぞれ1つ後を表示する
+                if (chart == Chart.DAILY) {
+                    specifiedCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                } else if (chart == Chart.MONTHLY) {
+                    specifiedCalendar.add(Calendar.MONTH, 1);
+                } else if (chart == Chart.YEARLY) {
+                    specifiedCalendar.add(Calendar.YEAR, 1);
+                }
+                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                showData();
                 setupPieChartView();
                 break;
         }
@@ -181,10 +241,7 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem deleteMenu = menu.findItem(R.id.delete_event);
-
         deleteMenu.setVisible(false);
-        menu.setGroupVisible(R.id.pie_chart_group, false);
-
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -201,6 +258,30 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intentPieChart);
                 finish();
                 break;
+            case R.id.daily_pie_chart:
+                //日別集計を表示
+                chart = Chart.DAILY;
+                showData();
+                setupPieChartView();
+
+                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                break;
+            case R.id.monthly_pie_chart:
+                //月別集計を表示
+                chart = Chart.MONTHLY;
+                showData();
+                setupPieChartView();
+
+                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                break;
+            case R.id.yearly_pie_chart:
+                //年別集計を表示
+                chart = Chart.YEARLY;
+                showData();
+                setupPieChartView();
+
+                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                break;
         }
         return super.onOptionsItemSelected(item);
 
@@ -212,8 +293,15 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
         realm.close();
     }
 
-    public static String getFormattedDate(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
+    public static String getFormattedDate(Date date, Chart chart) {
+        SimpleDateFormat simpleDateFormat;
+        if (chart == Chart.DAILY) {
+            simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
+        } else if (chart == Chart.MONTHLY) {
+            simpleDateFormat = new SimpleDateFormat("yyyy年MM月", Locale.getDefault());
+        } else {
+            simpleDateFormat = new SimpleDateFormat("yyyy年", Locale.getDefault());
+        }
         return simpleDateFormat.format(date);
     }
 
