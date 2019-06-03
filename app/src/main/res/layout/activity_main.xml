@@ -195,6 +195,7 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_eat"
                     android:tag="eat"/>
+
             </LinearLayout>
 
             <LinearLayout

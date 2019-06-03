@@ -64,12 +64,14 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             btnItemType[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //選択された場合枠線で囲む処理
                     if (choseIcon != null) {
                         choseIcon.setBackground(getResources().getDrawable(R.color.colorPrimary));
                     }
                     choseIcon = (ImageButton) view;
                     choseIcon.setBackground(getResources().getDrawable(R.drawable.chose_border));
 
+                    //Realmに格納する値
                     itemType = view.getTag().toString();
                     choseImageResource = getResources().getIdentifier("ic_" + view.getTag(), "drawable", getPackageName());
 
@@ -116,7 +118,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void editEvent() {
-        //updateした日時
+        //updateDateを識別子として各支出を管理
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd - hh:mm:ss");
         final String updateDate = simpleDateFormat.format(calendar.getTime());
@@ -125,6 +127,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         final String itemName = edtItemName.getText().toString();
         final int price = Integer.parseInt(edtPrice.getText().toString());
 
+        //必要項目が全て記入・選択されていればRealmに保存
         if (itemType != null && itemName != null && price != 0) {
             //保存
             realm.executeTransaction(new Realm.Transaction() {
@@ -138,8 +141,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                     realmEventDay.setItemName(itemName);
                     realmEventDay.setPrice(price);
                     realmEventDay.setDate(date);
-
-
                 }
             });
 
@@ -154,6 +155,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            //カレンダーダイアログを表示、日付の取得
             case R.id.txtDate:
                 DatePickerBuilder builder = new DatePickerBuilder(this, new OnSelectDateListener() {
                     @Override
@@ -190,11 +192,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem deleteMenu = menu.findItem(R.id.delete_event);
-
-        deleteMenu.setVisible(false);
         menu.setGroupVisible(R.id.pie_chart_group, false);
-
         return super.onPrepareOptionsMenu(menu);
     }
 

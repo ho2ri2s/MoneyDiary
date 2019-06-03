@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +27,6 @@ import java.util.Locale;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    // TODO: 2019/05/29 updateDate(Calendar),EventDayを保持するObjectを作る
 
     private Realm realm;
 
@@ -49,10 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String itemType;
     private int choseImageResource;
 
+
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("記入");
 
         realm = Realm.getDefaultInstance();
 
@@ -63,12 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btnItemType[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //選択された場合枠線で囲む処理
                     if(choseIcon != null){
                         choseIcon.setBackground(getResources().getDrawable(R.color.colorPrimary));
                     }
                     choseIcon = (ImageButton)view;
                     choseIcon.setBackground(getResources().getDrawable(R.drawable.chose_border));
 
+                    //Realmに格納する値
                     itemType = view.getTag().toString();
                     choseImageResource = getResources().getIdentifier("ic_" + view.getTag(), "drawable", getPackageName());
 
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void addEvent() {
-        //updateした日時
+        //updateDateを識別子として各支出を管理
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd - hh:mm:ss");
         final String updateDate = simpleDateFormat.format(calendar.getTime());
@@ -116,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final String itemName = edtItemName.getText().toString();
         final int price = Integer.parseInt(edtPrice.getText().toString());
 
+        //必要項目が全て記入・選択されていればRealmに保存
         if (itemType != null && itemName != null && price != 0 && specifiedCalendar != null) {
             final Date date = specifiedCalendar.getTime();
             //保存
@@ -130,14 +135,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     realmEventDay.setItemName(itemName);
                     realmEventDay.setPrice(price);
                     realmEventDay.setDate(date);
-
-
                 }
             });
             //入力リセット
             edtItemName.setText("");
             edtPrice.setText("0");
-
 
             Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
         } else {
@@ -148,14 +150,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            //カレンダーダイアログを表示、日付の取得
             case R.id.txtDate:
                 DatePickerBuilder builder = new DatePickerBuilder(this, new OnSelectDateListener() {
                     @Override
                     public void onSelect(List<Calendar> calendar) {
                         specifiedCalendar = calendar.get(0);
-                        Log.d("MYTAG", specifiedCalendar + "  spe");
-                        Log.d("MYTAG", Calendar.getInstance() + "  now");
-
                         txtDate.setText(getFormattedDate(specifiedCalendar.getTime()));
                     }
                 })

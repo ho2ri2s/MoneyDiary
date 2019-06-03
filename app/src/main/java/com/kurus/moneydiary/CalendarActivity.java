@@ -3,7 +3,6 @@ package com.kurus.moneydiary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -30,8 +29,8 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_calender);
+        setTitle("カレンダー");
 
         eventDays = new ArrayList<>();
 
@@ -54,31 +53,28 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
     }
 
 
-
     private void showData() {
-
+        //登録されている支出を全て取り出し、MyEventDay化してカレンダーに表示させる
         RealmResults<RealmEventDay> eventResult = realm.where(RealmEventDay.class).findAll();
         for (RealmEventDay realmEventDay : eventResult) {
-            Log.d("MYTAG", realmEventDay + "");
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(realmEventDay.getDate());
+
             MyEventDay myEventDay = new MyEventDay(calendar, realmEventDay.getUpdateDate(), realmEventDay.getImageResource()
-            , realmEventDay.getItemType(), realmEventDay.getItemName(), realmEventDay.getPrice());
+                    , realmEventDay.getItemType(), realmEventDay.getItemName(), realmEventDay.getPrice());
 
             eventDays.add(myEventDay);
-
         }
         calendarView.setEvents(eventDays);
     }
 
 
-
     @Override
     public void onDayClick(EventDay eventDay) {
-        if(eventDay instanceof MyEventDay){
+        if (eventDay instanceof MyEventDay) {
             //イベントがある場合はプレビュー
             previewNote(eventDay);
-        }else{
+        } else {
             //イベントがない場合は新規作成
             //(イベントがあってもなくてもeventDay != null)
             addEvent();
@@ -87,12 +83,13 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
 
     private void previewNote(EventDay eventDay) {
         Intent intent = new Intent(CalendarActivity.this, PreviewActivity.class);
-        if(eventDay instanceof  MyEventDay){
-            MyEventDay myEventDay = (MyEventDay)eventDay;
+        if (eventDay instanceof MyEventDay) {
+            MyEventDay myEventDay = (MyEventDay) eventDay;
             intent.putExtra("date", myEventDay.getCalendar().getTime());
         }
         startActivity(intent);
     }
+
     private void addEvent() {
         Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
         startActivity(intent);

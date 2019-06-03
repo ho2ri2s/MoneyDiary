@@ -9,7 +9,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/intent_pie_chart"
-        android:icon="@drawable/ic_circle_graph"
+        android:icon="@drawable/ic_pie_chart"
         android:title="集計"
         app:showAsAction="always" />
 

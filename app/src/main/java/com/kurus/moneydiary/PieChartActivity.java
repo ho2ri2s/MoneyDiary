@@ -40,7 +40,6 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
 
     // TODO: 2019/06/01 アイコンのサイズと色の変更 
     // TODO: 2019/06/01 pieChart詳細設定
-    // TODO: 2019/06/01 月、年別チャート
     // TODO: 2019/06/03 コメントをつける
     enum Chart {
         DAILY,
@@ -66,6 +65,7 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pie_chart);
+        setTitle("円グラフ");
 
         realm = Realm.getDefaultInstance();
 
@@ -80,6 +80,14 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
 
         //現在日時設定
         chart = Chart.DAILY;
+        setCurrentDate();
+
+        //円グラフ表示
+        showData();
+        setupPieChartView();
+    }
+
+    private void setCurrentDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.AM_PM, 0);
         calendar.set(Calendar.HOUR, 0);
@@ -89,10 +97,6 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
         calendar.set(Calendar.MILLISECOND, 0);
         specifiedCalendar = calendar;
         txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
-
-        //円グラフ表示
-        showData();
-        setupPieChartView();
     }
 
     public void showData() {
@@ -143,13 +147,7 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
         return realmEventDayList;
     }
 
-    // TODO: 2019/06/03 forループが終わった後の日付でクエリが実行されているからsizeが0になる
     public void setupPieChartView() {
-        //説明文の編集
-        Description description = new Description();
-        description.setText("支出");
-        description.setTextColor(Color.WHITE);
-        pieChart.setDescription(description);
 
         //同種別の支出をまとめてHashMapで管理
         HashMap<String, Integer> valueMap = new HashMap<>();
@@ -171,7 +169,8 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
             Map.Entry<String, Integer> entry = iterator.next();
             pieEntries.add(new PieEntry((float) entry.getValue(), entry.getKey()));
         }
-        //データをセットし、pie chartを描画
+
+        //データをセット、Pie Chartのスタイル設定
         PieDataSet dataSet = new PieDataSet(pieEntries, "種別");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setDrawValues(true);
@@ -179,6 +178,12 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
         PieData pieData = new PieData(dataSet);
         pieData.setValueTextSize(14f);
         pieData.setValueFormatter(new PercentFormatter());
+
+        //説明文の編集
+        Description description = new Description();
+        description.setText("支出");
+        description.setTextColor(Color.WHITE);
+        pieChart.setDescription(description);
 
         pieChart.setData(pieData);
         pieChart.invalidate();
@@ -263,24 +268,21 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
                 chart = Chart.DAILY;
                 showData();
                 setupPieChartView();
-
-                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                setCurrentDate();
                 break;
             case R.id.monthly_pie_chart:
                 //月別集計を表示
                 chart = Chart.MONTHLY;
                 showData();
                 setupPieChartView();
-
-                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                setCurrentDate();
                 break;
             case R.id.yearly_pie_chart:
                 //年別集計を表示
                 chart = Chart.YEARLY;
                 showData();
                 setupPieChartView();
-
-                txtDate.setText(getFormattedDate(specifiedCalendar.getTime(), chart));
+                setCurrentDate();
                 break;
         }
         return super.onOptionsItemSelected(item);
