@@ -133,7 +133,8 @@ public class PieChartActivity extends AppCompatActivity implements View.OnClickL
             for (int monthValue = 0; monthValue < 12; monthValue++) {
                 specifiedCalendar.set(Calendar.MONTH, monthValue);
                 int maxDate = specifiedCalendar.getActualMaximum(Calendar.DATE);
-                for (int dayValue = 0; dayValue <= maxDate; dayValue++) {
+                for (int dayValue = 1; dayValue <= maxDate; dayValue++) {
+                    specifiedCalendar.set(Calendar.DATE, dayValue);
                     realmEventDays = realm.where(RealmEventDay.class).equalTo("date", specifiedCalendar.getTime()).findAll();
                     for (RealmEventDay realmEventDay : realmEventDays) {
                         realmEventDayList.add(realmEventDay);
